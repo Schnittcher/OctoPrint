@@ -1,0 +1,19 @@
+{
+    "translations": {
+        "de": {
+            "Current State": "Aktueller Status",
+            "Yes": "Ja",
+            "No": "Nein",
+            "Operational": "Betriebsbereit",
+            "Printing": "Druckt",
+            "Cancelling": "Abbrechen",
+            "Pausing": "Pausieren",
+            "Resuming": "Fortsetzen",
+            "Finishing": "Fertigstellung",
+            "Closed or Error": "Geschlossen oder Fehler",
+            "Paused": "Pausiert",
+            "Ready": "Bereit",
+            "SD Card ready": "SD-Karte bereit"
+        }
+    }
+}

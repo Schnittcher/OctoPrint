@@ -1,0 +1,16 @@
+{
+    "id": "{66A02C84-6839-E682-0C27-9EE36EE88D3E}",
+    "name": "OctoConnectionHandling",
+    "type": 3,
+    "vendor": "",
+    "aliases": ["OctoPrint Verbindungen"],
+    "parentRequirements": [
+        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{98A7CF97-569C-48C8-8894-D57E1763ACFE}"
+    ],
+    "prefix": "OCTO",
+    "url": "https://deinsmarthome.info"
+}

@@ -1,0 +1,16 @@
+{
+    "id": "{27B4DB7A-166E-40FC-9C61-3570CF3CCC29}",
+    "name": "OctoTemperatures",
+    "type": 3,
+    "vendor": "",
+    "aliases": ["OctoPrint Temperaturen"],
+    "parentRequirements": [
+        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{617B62B6-F91F-40D2-8D91-CA8D46686476}"
+    ],
+    "prefix": "OCTO",
+    "url": "https://deinsmarthome.info"
+}

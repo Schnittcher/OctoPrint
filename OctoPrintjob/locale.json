@@ -1,0 +1,15 @@
+{
+    "translations": {
+        "de": {
+            "Filename": "Dateiname",
+            "Path": "Pfad",
+            "Display": "Display",
+            "Origin": "Ursprung",
+            "Size": "Größe",
+            "Completion": "Fertigstellung",
+            "Fileposition": "Dateiposition",
+            "Print Time": "Druckzeit",
+            "Print Time left": "Druckzeit übrig" 
+        }
+    }
+}

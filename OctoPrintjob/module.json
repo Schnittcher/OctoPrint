@@ -1,0 +1,16 @@
+{
+    "id": "{10408A5C-72CE-4A2D-A2F5-80DB5EB7C79B}",
+    "name": "OctoPrintjob",
+    "type": 3,
+    "vendor": "",
+    "aliases": ["OctoPrint Druckjob"],
+    "parentRequirements": [
+        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{B0D9814C-473D-4953-B79D-4B0CF946CBEE}"
+    ],
+    "prefix": "OCTO",
+    "url": "https://deinsmarthome.info"
+}

@@ -1,0 +1,16 @@
+{
+    "translations": {
+        "de": {
+            "Tool 0 Temperatures": "Extruder (0) Temperaturen",
+            "Bed Temperatures": "Bett Temperaturen",
+            "Chamber Temperatures": "Kammer Temperaturen",
+            "Tool 0 actual Temperature": "Aktuelle Extruder (0) Temperatur",
+            "Tool 0 target Temperature": "Aktuelle Extruder (0) Solltemperatur",
+            "Bed actual Temperature": "Aktuelle Bett Temperatur",
+            "Bed target Temperature": "Aktuelle Bett Solltemperatur",
+            "Chamber actual Temperature": "Aktuelle Kammer Temperatur",
+            "Chamber target Temperature": "Aktuelle Kammer Solltemperatur"
+
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "id": "{FDCD30E9-73C5-AC19-0470-20B71111BD91}",
+    "name": "OctoConnect",
+    "type": 2,
+    "vendor": "",
+    "aliases": ["OctoPrint Connect"],
+    "parentRequirements": [
+        "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"
+    ],
+    "childRequirements": [
+        "{061BF800-B5B6-5098-BD69-5D0FFD61FCED}",
+        "{617B62B6-F91F-40D2-8D91-CA8D46686476}",
+        "{98A7CF97-569C-48C8-8894-D57E1763ACFE}",
+        "{B0D9814C-473D-4953-B79D-4B0CF946CBEE}"
+    ],
+    "implemented": [
+        "{018EF6B5-AB94-40C6-AA53-46943E824ACF}",
+        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"],
+    "prefix": "OCTO",
+    "url": "https://deinsmarthome.info"
+}

@@ -1,0 +1,9 @@
+{
+    "translations": {
+        "de": {
+            "User": "Benutzer",
+            "Password": "Passwort",
+            "Login": "Login"
+        }
+    }
+}

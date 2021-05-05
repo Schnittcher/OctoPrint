@@ -1,0 +1,16 @@
+{
+    "id": "{445EF730-BA0B-4BDD-92FC-4134A6B97A6E}",
+    "name": "OctoCurrentState",
+    "type": 3,
+    "vendor": "",
+    "aliases": ["OctoPrint Aktueller Status"],
+    "parentRequirements": [
+        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{061BF800-B5B6-5098-BD69-5D0FFD61FCED}"
+    ],
+    "prefix": "OCTO",
+    "url": "https://deinsmarthome.info"
+}

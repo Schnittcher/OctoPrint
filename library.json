@@ -1,0 +1,12 @@
+{
+    "id": "{74A6957D-1CE3-92E6-E9E9-4C6AFE6ECA75}",
+    "name": "OctoPrint",
+    "author": "Kai Schnittcher",
+    "url": "https://deinsmarthome.info",
+    "compatibility": {
+        "version": "5.6"
+    },
+    "version": "1.0",
+    "build": 0,
+    "date": 0
+}
