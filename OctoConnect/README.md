@@ -1,67 +1,25 @@
 # OctoConnect
-Beschreibung des Moduls.
+   Diese Splitter Instanz stellt die Verbindung zum OctoPrint Server her.
 
-### Inhaltsverzeichnis
+   ## Inhaltverzeichnis
+   1. [Konfiguration](#1-konfiguration)
+   2. [Funktionen](#2-funktionen)
+   
+   ## 1. Konfiguration
+   
+   Feld | Beschreibung
+   ------------ | -------------
+   API URL | Her wird die URL zum OctoPrint Server inkl. Port eingetragen. Beispiel: http://10.10.0.60:5000
+   API Key | Für die Nutzung der API, ist ein API Key notwendig, dieser wird hier eingetragen. Der API Key kann unter Einstellungen -> Application Keys generiert werden.
+   Benutzer | Hier wird der OctoPrint benutzer eingetragen.
+   Passwort| Hier wird das Passwort zu dem OctoPrint User eingetragen.
 
-1. [Funktionsumfang](#1-funktionsumfang)
-2. [Voraussetzungen](#2-voraussetzungen)
-3. [Software-Installation](#3-software-installation)
-4. [Einrichten der Instanzen in IP-Symcon](#4-einrichten-der-instanzen-in-ip-symcon)
-5. [Statusvariablen und Profile](#5-statusvariablen-und-profile)
-6. [WebFront](#6-webfront)
-7. [PHP-Befehlsreferenz](#7-php-befehlsreferenz)
+     
+   ## 2. Funktionen
+   
+   **OCTO_OctoPrintLogin($InstanceID)**\
+   Mit dieser Funktion ist es möglich manuell den Login mit dem Websocket Client vom OctoPrint Server durchzuführen.
 
-### 1. Funktionsumfang
-
-*
-
-### 2. Vorraussetzungen
-
-- IP-Symcon ab Version 5.5
-
-### 3. Software-Installation
-
-* Über den Module Store das 'OctoConnect'-Modul installieren.
-* Alternativ über das Module Control folgende URL hinzufügen
-
-### 4. Einrichten der Instanzen in IP-Symcon
-
- Unter 'Instanz hinzufügen' kann das 'OctoConnect'-Modul mithilfe des Schnellfilters gefunden werden.  
-	- Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
-
-__Konfigurationsseite__:
-
-Name     | Beschreibung
--------- | ------------------
-         |
-         |
-
-### 5. Statusvariablen und Profile
-
-Die Statusvariablen/Kategorien werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.
-
-#### Statusvariablen
-
-Name   | Typ     | Beschreibung
------- | ------- | ------------
-       |         |
-       |         |
-
-#### Profile
-
-Name   | Typ
------- | -------
-       |
-       |
-
-### 6. WebFront
-
-Die Funktionalität, die das Modul im WebFront bietet.
-
-### 7. PHP-Befehlsreferenz
-
-`boolean OCTO_BeispielFunktion(integer $InstanzID);`
-Erklärung der Funktion.
-
-Beispiel:
-`OCTO_BeispielFunktion(12345);`
+   ```php
+   OCTO_OctoPrintLogin(25537); //Login
+   ```
