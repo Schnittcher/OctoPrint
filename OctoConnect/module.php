@@ -35,6 +35,12 @@ declare(strict_types=1);
             $this->SendDebug('Received Data :: Buffer', $data['Buffer'], 0);
             $buffer = json_decode($data['Buffer'], true);
 
+            if (array_key_exists('connected', $buffer)) {
+                if (!empty($this->ReadPropertyString('User')) && (!empty($this->ReadPropertyString('Password')))) {
+                    $this->OtcoPrintLogin();
+                }
+            }
+
             if (array_key_exists('event', $buffer)) {
                 $Data['DataID'] = '{98A7CF97-569C-48C8-8894-D57E1763ACFE}'; //OctoConnectionhandling
                 $Data['Buffer'] = json_encode($buffer['event']);
@@ -91,6 +97,12 @@ declare(strict_types=1);
                     $params = [];
                     $params['command'] = 'disconnect';
                     return $this->sendHTTPRequest('connection', $params, 'POST');
+                case 'Temp.BedTargetTemperature':
+                    $params = (array) $data->Buffer->Params;
+                    return $this->sendHTTPRequest('printer/bed', $params, 'POST');
+                case 'Temp.Tool0TargetTemperature':
+                $params = (array) $data->Buffer->Params;
+                return $this->sendHTTPRequest('printer/tool', $params, 'POST');
             }
         }
 
