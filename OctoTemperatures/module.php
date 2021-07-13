@@ -1,10 +1,10 @@
 <?php
 
 declare(strict_types=1);
-//require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
+require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
     class OctoTemperatures extends IPSModule
     {
-        //use VariableProfileHelper;
+        use VariableProfileHelper;
         public function Create()
         {
             //Never delete this line!
@@ -15,6 +15,8 @@ declare(strict_types=1);
             $this->RegisterPropertyBoolean('Tool0Temperatures', true);
             $this->RegisterPropertyBoolean('BedTemperatures', true);
             $this->RegisterPropertyBoolean('ChamerTemperatures', false);
+
+            $this->RegisterProfileFloat('OcotoPrint.Temperatures','Temperature', '',' °C',0, 400, 1, 2);
         }
 
         public function Destroy()
@@ -28,20 +30,20 @@ declare(strict_types=1);
             //Never delete this line!
             parent::ApplyChanges();
 
-            $this->MaintainVariable('Tool0ActualTemperature', $this->Translate('Tool 0 actual Temperature'), 2, '~Temperature', 1, $this->ReadPropertyBoolean('Tool0Temperatures') == true);
-            $this->MaintainVariable('Tool0TargetTemperature', $this->Translate('Tool 0 target Temperature'), 2, '~Temperature', 2, $this->ReadPropertyBoolean('Tool0Temperatures') == true);
+            $this->MaintainVariable('Tool0ActualTemperature', $this->Translate('Tool 0 actual Temperature'), 2, 'OcotoPrint.Temperatures', 1, $this->ReadPropertyBoolean('Tool0Temperatures') == true);
+            $this->MaintainVariable('Tool0TargetTemperature', $this->Translate('Tool 0 target Temperature'), 2, 'OcotoPrint.Temperatures', 2, $this->ReadPropertyBoolean('Tool0Temperatures') == true);
             if ($this->ReadPropertyBoolean('Tool0Temperatures') == true) {
                 $this->EnableAction('Tool0TargetTemperature');
             }
 
-            $this->MaintainVariable('BedActualTemperature', $this->Translate('Bed actual Temperature'), 2, '~Temperature', 3, $this->ReadPropertyBoolean('BedTemperatures') == true);
-            $this->MaintainVariable('BedTargetTemperature', $this->Translate('Bed target Temperature'), 2, '~Temperature', 4, $this->ReadPropertyBoolean('BedTemperatures') == true);
+            $this->MaintainVariable('BedActualTemperature', $this->Translate('Bed actual Temperature'), 2, 'OcotoPrint.Temperatures', 3, $this->ReadPropertyBoolean('BedTemperatures') == true);
+            $this->MaintainVariable('BedTargetTemperature', $this->Translate('Bed target Temperature'), 2, 'OcotoPrint.Temperatures', 4, $this->ReadPropertyBoolean('BedTemperatures') == true);
             if ($this->ReadPropertyBoolean('BedTemperatures') == true) {
                 $this->EnableAction('BedTargetTemperature');
             }
 
-            $this->MaintainVariable('ChamberActualTemperature', $this->Translate('Chamber actual Temperature'), 2, '~Temperature', 5, $this->ReadPropertyBoolean('ChamerTemperatures') == true);
-            $this->MaintainVariable('ChamberTargetTemperature', $this->Translate('Chamber target Temperature'), 2, '~Temperature', 6, $this->ReadPropertyBoolean('ChamerTemperatures') == true);
+            $this->MaintainVariable('ChamberActualTemperature', $this->Translate('Chamber actual Temperature'), 2, 'OcotoPrint.Temperatures', 5, $this->ReadPropertyBoolean('ChamerTemperatures') == true);
+            $this->MaintainVariable('ChamberTargetTemperature', $this->Translate('Chamber target Temperature'), 2, 'OcotoPrint.Temperatures', 6, $this->ReadPropertyBoolean('ChamerTemperatures') == true);
         }
 
         public function ReceiveData($JSONString)
