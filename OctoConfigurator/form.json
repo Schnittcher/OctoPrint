@@ -1,0 +1,71 @@
+{
+   "elements": [
+      {
+         "type": "Label",
+         "caption": "Configurator to create all OctoPrint Instances"
+      },
+      {
+         "type": "ValidationTextBox",
+         "name": "UUID",
+         "caption": "UUID"
+      }
+   ],
+   "actions": [
+      {
+         "type": "Configurator",
+         "name": "Configurator",
+         "caption": "Configurator",
+         "rowCount": 15,
+         "delete": false,
+         "sort": {
+            "column": "DisplayName",
+            "direction": "ascending"
+         },
+         "columns": [
+            {
+               "caption": "Name",
+               "name": "DisplayName",
+               "width": "auto"
+            }
+         ],
+         "values": [
+            {
+               "DisplayName": "OctoPrint Current State",
+               "create": {
+                  "moduleID": "{445EF730-BA0B-4BDD-92FC-4134A6B97A6E}",
+                  "configuration": {
+                     "UUID": ""
+                  }
+               }
+            },
+            {
+               "DisplayName": "OctoPrint Printjob",
+               "create": {
+                  "moduleID": "{10408A5C-72CE-4A2D-A2F5-80DB5EB7C79B}",
+                  "configuration": {
+                     "UUID": ""
+                  }
+               }
+            },
+            {
+               "DisplayName": "OctoPrint Temperatures",
+               "create": {
+                  "moduleID": "{27B4DB7A-166E-40FC-9C61-3570CF3CCC29}",
+                  "configuration": {
+                     "UUID": ""
+                  }
+               }
+            },
+            {
+               "DisplayName": "OctoPrint Connection Handling",
+               "create": {
+                  "moduleID": "{66A02C84-6839-E682-0C27-9EE36EE88D3E}",
+                  "configuration": {
+                     "UUID": ""
+                  }
+               }
+            }
+         ]
+      }
+   ]
+}

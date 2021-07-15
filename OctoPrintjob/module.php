@@ -12,6 +12,8 @@ declare(strict_types=1);
 
             $this->ConnectParent('{FDCD30E9-73C5-AC19-0470-20B71111BD91}');
 
+            $this->RegisterPropertyString('UUID', '');
+
             $this->RegisterVariableString('Filename', $this->Translate('Filename'), '', 0);
             $this->RegisterVariableString('Path', $this->Translate('Path'), '', 1);
             $this->RegisterVariableString('Display', $this->Translate('Display'), '', 2);

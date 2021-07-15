@@ -1,5 +1,11 @@
 {
-    "elements": [],
+    "elements": [
+        {
+            "type": "ValidationTextBox",
+            "name": "UUID",
+            "caption": "UUID"
+          }
+    ],
     "actions": [],
     "status": []
 }

@@ -1,0 +1,15 @@
+{
+  "id": "{CCABE3F4-E155-4272-ABCE-D08949751DD0}",
+  "name": "OctoConfigurator",
+  "type": 4,
+  "vendor": "",
+  "aliases": ["OctoPrint Configurator"],
+  "parentRequirements": [
+    "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
+],
+"childRequirements": [],
+"implemented": [
+    "{617B62B6-F91F-40D2-8D91-CA8D46686476}"
+],
+  "prefix": "OCTO"
+}

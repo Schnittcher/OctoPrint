@@ -12,6 +12,8 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
 
             $this->ConnectParent('{FDCD30E9-73C5-AC19-0470-20B71111BD91}');
 
+            $this->RegisterPropertyString('UUID', '');
+
             $this->RegisterPropertyBoolean('Tool0Temperatures', true);
             $this->RegisterPropertyBoolean('BedTemperatures', true);
             $this->RegisterPropertyBoolean('ChamerTemperatures', false);

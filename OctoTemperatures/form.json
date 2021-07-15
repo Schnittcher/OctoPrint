@@ -1,9 +1,25 @@
 {
     "elements": [
-        { "type": "CheckBox", "name": "Tool0Temperatures", "caption": "Tool 0 Temperatures" },
-        { "type": "CheckBox", "name": "BedTemperatures", "caption": "Bed Temperatures" },
-        { "type": "CheckBox", "name": "ChamerTemperatures", "caption": "Chamber Temperatures" }
-
+        {
+            "type": "ValidationTextBox",
+            "name": "UUID",
+            "caption": "UUID"
+        },
+        {
+            "type": "CheckBox",
+            "name": "Tool0Temperatures",
+            "caption": "Tool 0 Temperatures"
+        },
+        {
+            "type": "CheckBox",
+            "name": "BedTemperatures",
+            "caption": "Bed Temperatures"
+        },
+        {
+            "type": "CheckBox",
+            "name": "ChamerTemperatures",
+            "caption": "Chamber Temperatures"
+        }
     ],
     "actions": [],
     "status": []

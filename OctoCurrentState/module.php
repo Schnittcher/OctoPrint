@@ -12,6 +12,8 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
 
             $this->ConnectParent('{FDCD30E9-73C5-AC19-0470-20B71111BD91}');
 
+            $this->RegisterPropertyString('UUID', '');
+
             $this->RegisterVariableString('CurrentState', $this->Translate('Current State'), '', 0);
 
             if (!IPS_VariableProfileExists('OCH.YesNo')) {

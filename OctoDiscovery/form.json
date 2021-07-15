@@ -1,0 +1,54 @@
+{
+  "elements": [
+    {
+      "type": "ValidationTextBox",
+      "name": "APIKEY",
+      "caption": "API Key"
+    },
+    {
+      "type": "ValidationTextBox",
+      "name": "User",
+      "caption": "User"
+    },
+    {
+      "type": "ValidationTextBox",
+      "name": "Password",
+      "caption": "Password"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Configurator",
+      "name": "Configurator",
+      "caption": "OctoPrint Disocvery",
+      "delete": false,
+      "sort": {
+        "column": "IPAddress",
+        "direction": "ascending"
+      },
+      "columns": [
+        {
+          "caption": "IP Address",
+          "name": "IPAddress",
+          "width": "250px"
+        },
+        {
+          "caption": "Name",
+          "name": "name",
+          "width": "auto"
+        },
+        {
+          "caption": "Version",
+          "name": "Version",
+          "width": "250px"
+        },
+        {
+          "caption": "UUID",
+          "name": "UUID",
+          "width": "450px"
+        }
+      ],
+      "values": []
+    }
+  ]
+}
