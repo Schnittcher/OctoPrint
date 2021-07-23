@@ -17,7 +17,7 @@
         },
         {
             "type": "CheckBox",
-            "name": "ChamerTemperatures",
+            "name": "ChamberTemperatures",
             "caption": "Chamber Temperatures"
         }
     ],

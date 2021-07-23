@@ -16,7 +16,7 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
 
             $this->RegisterPropertyBoolean('Tool0Temperatures', true);
             $this->RegisterPropertyBoolean('BedTemperatures', true);
-            $this->RegisterPropertyBoolean('ChamerTemperatures', false);
+            $this->RegisterPropertyBoolean('ChamberTemperatures', false);
 
             $this->RegisterProfileFloat('OcotoPrint.Temperatures','Temperature', '',' °C',0, 400, 1, 2);
         }
@@ -44,8 +44,8 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
                 $this->EnableAction('BedTargetTemperature');
             }
 
-            $this->MaintainVariable('ChamberActualTemperature', $this->Translate('Chamber actual Temperature'), 2, 'OcotoPrint.Temperatures', 5, $this->ReadPropertyBoolean('ChamerTemperatures') == true);
-            $this->MaintainVariable('ChamberTargetTemperature', $this->Translate('Chamber target Temperature'), 2, 'OcotoPrint.Temperatures', 6, $this->ReadPropertyBoolean('ChamerTemperatures') == true);
+            $this->MaintainVariable('ChamberActualTemperature', $this->Translate('Chamber actual Temperature'), 2, 'OcotoPrint.Temperatures', 5, $this->ReadPropertyBoolean('ChamberTemperatures') == true);
+            $this->MaintainVariable('ChamberTargetTemperature', $this->Translate('Chamber target Temperature'), 2, 'OcotoPrint.Temperatures', 6, $this->ReadPropertyBoolean('ChamberTemperatures') == true);
         }
 
         public function ReceiveData($JSONString)
