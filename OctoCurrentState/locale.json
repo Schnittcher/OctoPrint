@@ -13,7 +13,12 @@
             "Closed or Error": "Geschlossen oder Fehler",
             "Paused": "Pausiert",
             "Ready": "Bereit",
-            "SD Card ready": "SD-Karte bereit"
+            "SD Card ready": "SD-Karte bereit",
+            "Print": "Drucken",
+            "Pause": "Pause",
+            "Cancel": "Abbrechen",
+            "Resume": "Fortsetzen",
+            "Restart": "Neu starten"
         }
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
 declare(strict_types=1);
-//require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
+require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
     class OctoPrintjob extends IPSModule
     {
-        //use VariableProfileHelper;
+        use VariableProfileHelper;
         public function Create()
         {
             //Never delete this line!
@@ -13,16 +13,17 @@ declare(strict_types=1);
             $this->ConnectParent('{FDCD30E9-73C5-AC19-0470-20B71111BD91}');
 
             $this->RegisterPropertyString('UUID', '');
+            $this->RegisterProfileFloat('OctoPrint.MB', 'Notebook', '', ' MB', 0, 0, 0.1, 00);
 
             $this->RegisterVariableString('Filename', $this->Translate('Filename'), '', 0);
             $this->RegisterVariableString('Path', $this->Translate('Path'), '', 1);
             $this->RegisterVariableString('Display', $this->Translate('Display'), '', 2);
             $this->RegisterVariableString('Origin', $this->Translate('Origin'), '', 3);
-            $this->RegisterVariableFloat('Size', $this->Translate('Size'), '', 4);
+            $this->RegisterVariableFloat('Size', $this->Translate('Size'), 'OctoPrint.MB', 4);
 
-            $this->RegisterVariableFloat('Completion', $this->Translate('Completion'), '', 5);
-            $this->RegisterVariableInteger('Filepos', $this->Translate('Fileposition'), '', 6);
-            $this->RegisterVariableInteger('Printtime', $this->Translate('Print Time'), '', 7);
+            $this->RegisterVariableInteger('Completion', $this->Translate('Completion'), '~Intensity.100', 5);
+            $this->RegisterVariableFloat('Filepos', $this->Translate('Fileposition'), 'OctoPrint.MB', 6);
+            $this->RegisterVariableInteger('Printtime', $this->Translate('Print Time'), '~UnixTimestampTime', 7);
             $this->RegisterVariableInteger('PrinttimeLeft', $this->Translate('Print Time left'), '', 8);
         }
 
@@ -51,12 +52,14 @@ declare(strict_types=1);
                 $this->SetValue('Path', $buffer['file']['path']);
                 $this->SetValue('Display', $buffer['file']['path']);
                 $this->SetValue('Origin', $buffer['file']['origin']);
-                $this->SetValue('Size', $buffer['file']['size']);
+                $this->SetValue('Size', $buffer['file']['size'] / 1024 / 1024);
             }
             if (array_key_exists('completion', $buffer)) {
                 $this->SetValue('Completion', $buffer['completion']);
-                $this->SetValue('Filepos', $buffer['filepos']);
-                $this->SetValue('Printtime', $buffer['printTime']);
+                $this->SetValue('Filepos', $buffer['filepos'] / 1024 / 1024);
+                if (!is_null($buffer['printTime'])) {
+                    $this->SetValue('Printtime', mktime(0, 0, $buffer['printTime'], (int) date('m'), (int) date('d'), (int) date('Y')));
+                }
                 $this->SetValue('PrinttimeLeft', $buffer['printTimeLeft']);
             }
         }

@@ -101,8 +101,11 @@ declare(strict_types=1);
                     $params = (array) $data->Buffer->Params;
                     return $this->sendHTTPRequest('printer/bed', $params, 'POST');
                 case 'Temp.Tool0TargetTemperature':
-                $params = (array) $data->Buffer->Params;
-                return $this->sendHTTPRequest('printer/tool', $params, 'POST');
+                    $params = (array) $data->Buffer->Params;
+                    return $this->sendHTTPRequest('printer/tool', $params, 'POST');
+                case 'OCT.ActionStart':
+                    $params = (array) $data->Buffer->Params;
+                    return $this->sendHTTPRequest('job', $params, 'POST');
             }
         }
 
@@ -111,6 +114,7 @@ declare(strict_types=1);
             $URL = $this->ReadPropertyString('APIURL') . '/api/' . $endpoint;
             $apiKey = $this->ReadPropertyString('APIKey');
             $this->SendDebug(__FUNCTION__ . ' :: URL', $URL, 0);
+            $this->SendDebug(__FUNCTION__ . ' :: Params', json_encode($params), 0);
 
             $headers = [
                 'Authorization: Bearer ' . $apiKey,

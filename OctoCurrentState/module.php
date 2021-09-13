@@ -34,6 +34,42 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
             $this->RegisterVariableBoolean('Paused', $this->Translate('Paused'), 'OCTO.YesNo', 9);
             $this->RegisterVariableBoolean('Ready', $this->Translate('Ready'), 'OCTO.YesNo', 10);
             $this->RegisterVariableBoolean('SDReady', $this->Translate('SD Card ready'), 'OCTO.YesNo', 11);
+
+            $this->RegisterProfileStringEx('OCTO.Start', 'Menu', '', '', [
+                ['start', $this->Translate('Start'), '', 0x00ff00],
+                ['restart', $this->Translate('Restart'), '', 0xff8000],
+                ['cancel', $this->Translate('Cancel'), '', 0xff0000],
+            ]);
+            $this->RegisterVariableString('ActionStart', $this->Translate('Start'), 'OCTO.Start', 13);
+            $this->EnableAction('ActionStart');
+
+            $this->RegisterProfileStringEx('OCTO.Pausing', 'Menu', '', '', [
+                ['pause', $this->Translate('Pause'), '', 0xff8000],
+                ['resume', $this->Translate('Resume'), '', 0x00ff00],
+            ]);
+            $this->RegisterVariableString('ActionPausing', $this->Translate('Pausing'), 'OCTO.Pausing', 13);
+            $this->EnableAction('ActionPausing');
+        }
+
+        public function RequestAction($Ident, $Value)
+        {
+            switch ($Ident) {
+                case 'ActionStart':
+                    $params = [
+                        'command' => $Value,
+                    ];
+                    $this->sendCommand('OCT.ActionStart', $params);
+                    break;
+                case 'ActionPausing':
+                    $params = [
+                        'command' => 'pause',
+                        'action'  => $Value,
+                    ];
+                    $this->sendCommand('OCT.ActionPausing', $params);
+                    break;
+                default:
+                $this->SendDebug('RequestAction :: Ident', 'Invalid Ident', 0);
+                }
         }
 
         public function Destroy()
@@ -72,5 +108,15 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
                     $this->SetValue('SDReady', $buffer['state']['flags']['sdReady']);
                 }
             }
+        }
+        private function sendCommand($Command, $Params)
+        {
+            $Data['DataID'] = '{B8E958B1-9C0B-8EB0-B863-7740708326EB}';
+
+            $Buffer['Command'] = $Command;
+            $Buffer['Params'] = $Params;
+            $Data['Buffer'] = $Buffer;
+            $Data = json_encode($Data);
+            $Data = json_decode($this->SendDataToParent($Data), true);
         }
     }
