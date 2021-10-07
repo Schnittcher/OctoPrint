@@ -37,7 +37,6 @@ class OctoConfigurator extends IPSModule
 
             $Form['actions'][0]['values'][$i]['create']['configuration']['UUID'] = $this->ReadPropertyString('UUID');
         }
-        IPS_LogMessage('Form New', print_r($Form, true));
         return json_encode($Form);
     }
 
