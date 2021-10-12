@@ -54,8 +54,6 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
             $data = json_decode($JSONString, true);
             $buffer = json_decode($data['Buffer'], true);
 
-            IPS_LogMessage('Temps Buffer', print_r($buffer, true));
-
             if (array_key_exists('tool0', $buffer[0]) && ($this->ReadPropertyBoolean('Tool0Temperatures'))) {
                 $this->SetValue('Tool0ActualTemperature', $buffer[0]['tool0']['actual']);
                 $this->SetValue('Tool0TargetTemperature', $buffer[0]['tool0']['target']);

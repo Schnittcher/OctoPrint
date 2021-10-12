@@ -45,8 +45,6 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
             $data = json_decode($JSONString, true);
             $buffer = json_decode($data['Buffer'], true);
 
-            //IPS_LogMessage('PrintJob Buffer', print_r($buffer, true));
-
             if (array_key_exists('file', $buffer)) {
                 $this->SetValue('Filename', $buffer['file']['name']);
                 $this->SetValue('Path', $buffer['file']['path']);

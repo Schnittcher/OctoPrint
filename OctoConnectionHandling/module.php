@@ -114,9 +114,10 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
             $Data['Buffer'] = $Buffer;
             $Data = json_encode($Data);
 
-            $Data = json_decode($this->SendDataToParent($Data), true);
+            $JSONData = json_decode($this->SendDataToParent($Data), true);
+            $this->SendDebug('getConnectSettings :: Received JSON', $Data, 0);
+            $Data = json_decode($JSONData, true);
 
-            IPS_LogMessage('getConnectSettings :: Received JSON', print_r($Data, true));
             if (!$Data) {
                 return false;
             }

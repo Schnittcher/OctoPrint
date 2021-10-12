@@ -142,9 +142,6 @@ declare(strict_types=1);
 
             $result = json_decode($JSONResult, true);
 
-            //IPS_LogMessage('Result', print_r($result, true));
-            //IPS_LogMessage('headerInfo', print_r($headerInfo, true));
-
             return $JSONResult;
         }
 
