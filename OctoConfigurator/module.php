@@ -29,6 +29,7 @@ class OctoConfigurator extends IPSModule
         $OctoPrintInstanceNames[1] = 'OctoPrint Printjob';
         $OctoPrintInstanceNames[2] = 'OctoPrint Temperatures';
         $OctoPrintInstanceNames[3] = 'OctoPrint Connection Handling';
+        $OctoPrintInstanceNames[4] = 'OctoPrint System';
 
         for ($i = 0; $i <= $InstancesCount - 1; $i++) {
             $instanceID = $this->getOctoPrintInstances($Form['actions'][0]['values'][$i]['create']['moduleID'], $this->ReadPropertyString('UUID'));

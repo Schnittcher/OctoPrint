@@ -1,0 +1,16 @@
+{
+    "id": "{C02C3949-0FFA-4641-ABC0-629046854215}",
+    "name": "OctoSystem",
+    "type": 3,
+    "vendor": "",
+    "aliases": ["OctoPrint System"],
+    "parentRequirements": [
+        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{98A7CF97-569C-48C8-8894-D57E1763ACFE}"
+    ],
+    "prefix": "OCTO",
+    "url": "https://deinsmarthome.info"
+}

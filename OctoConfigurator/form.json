@@ -64,6 +64,15 @@
                      "UUID": ""
                   }
                }
+            },
+            {
+               "DisplayName": "OctoPrint System",
+               "create": {
+                  "moduleID": "{C02C3949-0FFA-4641-ABC0-629046854215}",
+                  "configuration": {
+                     "UUID": ""
+                  }
+               }
             }
          ]
       }

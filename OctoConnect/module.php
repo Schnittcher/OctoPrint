@@ -106,6 +106,9 @@ declare(strict_types=1);
                 case 'OCT.ActionStart':
                     $params = (array) $data->Buffer->Params;
                     return $this->sendHTTPRequest('job', $params, 'POST');
+                case 'Sys.Control':
+                    $params = $data->Buffer->Params;
+                    return $this->sendHTTPRequest('system/commands/core/'.$params, [], 'POST');
             }
         }
 

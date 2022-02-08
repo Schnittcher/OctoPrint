@@ -1,0 +1,10 @@
+{
+    "translations": {
+        "de": {
+            "Shutdown": "Herunterfahren",
+            "Reboot": "Neustart (System)",
+            "Restart": "Neustart (Octoprint)",
+            "System Control": "System Kontrolle"
+        }
+    }
+}
