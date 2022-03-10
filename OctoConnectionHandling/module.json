@@ -3,7 +3,9 @@
     "name": "OctoConnectionHandling",
     "type": 3,
     "vendor": "",
-    "aliases": ["OctoPrint Verbindungen"],
+    "aliases": [
+        "OctoPrint Verbindungen"
+    ],
     "parentRequirements": [
         "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
     ],

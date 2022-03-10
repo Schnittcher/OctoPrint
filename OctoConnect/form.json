@@ -1,13 +1,32 @@
 {
     "elements": [
-        { "name": "APIURL", "type": "ValidationTextBox", "caption": "API URL" },
-        { "name": "APIKey", "type": "ValidationTextBox", "caption": "API Key" },
-        { "name": "User", "type": "ValidationTextBox", "caption": "User" },
-        { "name": "Password", "type": "PasswordTextBox", "caption": "Password" }
+        {
+            "name": "APIURL",
+            "type": "ValidationTextBox",
+            "caption": "API URL"
+        },
+        {
+            "name": "APIKey",
+            "type": "ValidationTextBox",
+            "caption": "API Key"
+        },
+        {
+            "name": "User",
+            "type": "ValidationTextBox",
+            "caption": "User"
+        },
+        {
+            "name": "Password",
+            "type": "PasswordTextBox",
+            "caption": "Password"
+        }
     ],
     "actions": [
-        { "type": "Button", "caption": "Login", "onClick": "OCTO_OtcoPrintLogin($id);" }
-
+        {
+            "type": "Button",
+            "caption": "Login",
+            "onClick": "OCTO_OtcoPrintLogin($id);"
+        }
     ],
     "status": []
 }

@@ -1,13 +1,13 @@
 {
-  "translations": {
-    "de": {
-      "IP Address": "IP Adresse",
-      "Name": "Name",
-      "Version": "Version",
-      "UUID": "UUID",
-      "Instance ID": "Instanz ID",
-      "User": "User",
-      "Password": "Password"
+    "translations": {
+        "de": {
+            "IP Address": "IP Adresse",
+            "Name": "Name",
+            "Version": "Version",
+            "UUID": "UUID",
+            "Instance ID": "Instanz ID",
+            "User": "User",
+            "Password": "Password"
+        }
     }
-  }
 }

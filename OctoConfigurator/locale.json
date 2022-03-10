@@ -1,12 +1,12 @@
 {
-  "translations": {
-    "de": {
-      "Configurator to create all OctoPrint Instances": "Konfigurator, um alle OctoPrint Instanze zu erstellen.",
-      "Configurator": "Konfigurator",
-      "OctoPrint Connection Handling": "OctoPrint Verbindungen",
-      "OctoPrint Temperatures": "OctoPrint Temperaturen",
-      "OctoPrint Printjob": "OctoPrint Druckjob",
-      "OctoPrint Current State": "OctoPrint Aktueller Status"
+    "translations": {
+        "de": {
+            "Configurator to create all OctoPrint Instances": "Konfigurator, um alle OctoPrint Instanze zu erstellen.",
+            "Configurator": "Konfigurator",
+            "OctoPrint Connection Handling": "OctoPrint Verbindungen",
+            "OctoPrint Temperatures": "OctoPrint Temperaturen",
+            "OctoPrint Printjob": "OctoPrint Druckjob",
+            "OctoPrint Current State": "OctoPrint Aktueller Status"
+        }
     }
-  }
 }

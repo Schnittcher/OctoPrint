@@ -1,11 +1,13 @@
 {
-  "id": "{6A1684B4-8B78-4CA9-975D-3F22C708D4DF}",
-  "name": "OctoDiscovery",
-  "type": 5,
-  "vendor": "",
-  "aliases": ["OcotPrint Discovery"],
-  "parentRequirements": [],
-  "childRequirements": [],
-  "implemented": [],
-  "prefix": "OCTO"
+    "id": "{6A1684B4-8B78-4CA9-975D-3F22C708D4DF}",
+    "name": "OctoDiscovery",
+    "type": 5,
+    "vendor": "",
+    "aliases": [
+        "OcotPrint Discovery"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "OCTO"
 }

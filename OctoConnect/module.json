@@ -3,7 +3,9 @@
     "name": "OctoConnect",
     "type": 2,
     "vendor": "",
-    "aliases": ["OctoPrint Connect"],
+    "aliases": [
+        "OctoPrint Connect"
+    ],
     "parentRequirements": [
         "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"
     ],
@@ -15,7 +17,8 @@
     ],
     "implemented": [
         "{018EF6B5-AB94-40C6-AA53-46943E824ACF}",
-        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"],
+        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
+    ],
     "prefix": "OCTO",
     "url": "https://deinsmarthome.info"
 }
