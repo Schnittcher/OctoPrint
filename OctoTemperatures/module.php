@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
+require_once __DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php';
     class OctoTemperatures extends IPSModule
     {
         use VariableProfileHelper;
@@ -18,7 +18,7 @@ require_once __DIR__ . '/../libs/SymconModulHelper/VariableProfileHelper.php';
             $this->RegisterPropertyBoolean('BedTemperatures', true);
             $this->RegisterPropertyBoolean('ChamberTemperatures', false);
 
-            $this->RegisterProfileFloat('OcotoPrint.Temperatures','Temperature', '',' °C',0, 400, 1, 2);
+            $this->RegisterProfileFloat('OcotoPrint.Temperatures', 'Temperature', '', ' °C', 0, 400, 1, 2);
         }
 
         public function Destroy()
