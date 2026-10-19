@@ -1,15 +1,21 @@
 {
     "translations": {
         "de": {
-            "Tool 0 Temperatures": "Extruder (0) Temperaturen",
-            "Bed Temperatures": "Bett Temperaturen",
-            "Chamber Temperatures": "Kammer Temperaturen",
-            "Tool 0 actual Temperature": "Aktuelle Extruder (0) Temperatur",
-            "Tool 0 target Temperature": "Aktuelle Extruder (0) Solltemperatur",
-            "Bed actual Temperature": "Aktuelle Bett Temperatur",
-            "Bed target Temperature": "Aktuelle Bett Solltemperatur",
-            "Chamber actual Temperature": "Aktuelle Kammer Temperatur",
-            "Chamber target Temperature": "Aktuelle Kammer Solltemperatur"
+            "UUID": "UUID",
+            "Tool 0 Temperatures": "Extruder-0-Temperaturen",
+            "Tool 1 Temperatures": "Extruder-1-Temperaturen",
+            "Bed Temperatures": "Bett-Temperaturen",
+            "Chamber Temperatures": "Kammer-Temperaturen",
+            "Tool 0 actual Temperature": "Extruder 0 Ist-Temperatur",
+            "Tool 0 target Temperature": "Extruder 0 Soll-Temperatur",
+            "Tool 1 actual Temperature": "Extruder 1 Ist-Temperatur",
+            "Tool 1 target Temperature": "Extruder 1 Soll-Temperatur",
+            "Bed actual Temperature": "Bett Ist-Temperatur",
+            "Bed target Temperature": "Bett Soll-Temperatur",
+            "Chamber actual Temperature": "Kammer Ist-Temperatur",
+            "Chamber target Temperature": "Kammer Soll-Temperatur",
+            "Donations": "Spenden / Schenkung",
+            "This module is free for non-commercial use. Donations to support the author are accepted here:    ": "Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    "
         }
     }
 }

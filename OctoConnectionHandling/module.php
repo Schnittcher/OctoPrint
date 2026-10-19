@@ -1,151 +1,149 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php';
-    class OctoConnectionHandling extends IPSModule
+
+require_once __DIR__ . '/../libs/OctoCommandHelper.php';
+
+class OctoConnectionHandling extends IPSModuleStrict
+{
+    use OctoCommandHelper;
+
+    public function Create(): void
     {
-        use VariableProfileHelper;
-        public function Create()
-        {
-            //Never delete this line!
-            parent::Create();
+        //Never delete this line!
+        parent::Create();
 
-            $this->ConnectParent('{FDCD30E9-73C5-AC19-0470-20B71111BD91}');
+        $this->RegisterPropertyString('UUID', '');
 
-            $this->RegisterPropertyString('UUID', '');
+        $this->RegisterVariableString('Ports', $this->Translate('Ports'), $this->getEnumerationPresentation([]), 0);
+        $this->EnableAction('Ports');
 
-            if (!IPS_VariableProfileExists('OCH.Ports')) {
-                IPS_CreateVariableProfile('OCH.Ports', 3);
-            }
-            $this->RegisterVariableString('Ports', $this->Translate('Ports'), 'OCH.Ports', 0);
-            $this->EnableAction('Ports');
+        $this->RegisterVariableString('Baudrates', $this->Translate('Baudrates'), $this->getEnumerationPresentation([]), 1);
+        $this->EnableAction('Baudrates');
 
-            if (!IPS_VariableProfileExists('OCH.Baudrates')) {
-                IPS_CreateVariableProfile('OCH.Baudrates', 3);
-            }
-            $this->RegisterVariableString('Baudrates', $this->Translate('Baudrates'), 'OCH.Baudrates', 1);
-            $this->EnableAction('Baudrates');
+        $this->RegisterVariableBoolean('State', $this->Translate('Connection'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+        ], 2);
+        $this->EnableAction('State');
+    }
 
-            $this->RegisterVariableBoolean('State', $this->Translate('Connection'), '~Switch', 2);
-            $this->EnableAction('State');
-        }
+    public function Destroy(): void
+    {
+        //Never delete this line!
+        parent::Destroy();
+    }
 
-        public function Destroy()
-        {
-            //Never delete this line!
-            parent::Destroy();
-        }
+    public function ApplyChanges(): void
+    {
+        //Never delete this line!
+        parent::ApplyChanges();
 
-        public function ApplyChanges()
-        {
-            //Never delete this line!
-            parent::ApplyChanges();
-        }
-
-        public function RequestAction($Ident, $Value)
-        {
-            switch ($Ident) {
-                case 'State':
-                    if ($Value) {
-                        $this->Connect();
-                    } else {
-                        $this->Disonnect();
-                    }
-                    break;
-                default:
-                    $this->SetValue($Ident, $Value);
-                    break;
-            }
-        }
-
-        public function ReceiveData($JSONString)
-        {
-            $this->SendDebug('ReceiveData :: JSON', $JSONString, 0);
-            $data = json_decode($JSONString, true);
-            $buffer = json_decode($data['Buffer'], true);
-
-            if (array_key_exists('type', $buffer)) {
-                switch ($buffer['type']) {
-                    case 'Connected':
-                        $this->SetValue('Ports', $buffer['payload']['port']);
-                        $this->SetValue('Baudrates', $buffer['payload']['baudrate']);
-                        $this->SetValue('State', true);
-                        break;
-                    case 'Disconnected':
-                        $this->SetValue('State', false);
-                        break;
-                }
-            }
-        }
-
-        public function Connect()
-        {
-            $Data['DataID'] = '{B8E958B1-9C0B-8EB0-B863-7740708326EB}';
-
-            $Buffer['Command'] = 'CH.Connect';
-            $Buffer['Params'] = '';
-            //$Buffer['Params']['port'] = $this->GetValue('Ports');
-            //$Buffer['Params']['baudrate'] = $this->GetValue('Baudrates');
-            //$Buffer['Params']['printerProfile'] = 'Mega-S';
-            //$Buffer['Params']['save'] = $this->GetValue('Baudrates');
-            $Data['Buffer'] = $Buffer;
-            $Data = json_encode($Data);
-            $Data = json_decode($this->SendDataToParent($Data), true);
-        }
-
-        public function Disonnect()
-        {
-            $Data['DataID'] = '{B8E958B1-9C0B-8EB0-B863-7740708326EB}';
-
-            $Buffer['Command'] = 'CH.Disconnect';
-            $Buffer['Params'] = '';
-            $Data['Buffer'] = $Buffer;
-            $Data = json_encode($Data);
-            $Data = json_decode($this->SendDataToParent($Data), true);
-        }
-
-        public function getConnectSettings()
-        {
-            $Data['DataID'] = '{B8E958B1-9C0B-8EB0-B863-7740708326EB}';
-
-            $Buffer['Command'] = 'CH.GetConnectionSettings';
-            $Buffer['Params'] = '';
-
-            $Data['Buffer'] = $Buffer;
-            $Data = json_encode($Data);
-
-            $JSONData = json_decode($this->SendDataToParent($Data), true);
-            $this->SendDebug('getConnectSettings :: Received JSON', $Data, 0);
-            $Data = json_decode($JSONData, true);
-
-            if (!$Data) {
-                return false;
-            }
-
-            if (IPS_VariableProfileExists('OCH.Ports')) {
-                IPS_DeleteVariableProfile('OCH.Ports');
-            }
-            $associations = [];
-            foreach ($Data['options']['ports'] as $value) {
-                $association[0] = $value;
-                $association[1] = $value;
-                $association[2] = '';
-                $association[3] = -1;
-                array_push($associations, $association);
-            }
-            $this->RegisterProfileStringEx('OCH.Ports', 'Network', '', '', $associations);
-
-            if (IPS_VariableProfileExists('OCH.Baudrates')) {
-                IPS_DeleteVariableProfile('OCH.Baudrates');
-            }
-            $associations = [];
-            foreach ($Data['options']['baudrates'] as $value) {
-                $association[0] = $value;
-                $association[1] = $value;
-                $association[2] = '';
-                $association[3] = -1;
-                array_push($associations, $association);
-            }
-            $this->RegisterProfileStringEx('OCH.Baudrates', 'Network', '', '', $associations);
+        // Auswahl für Ports und Baudraten von OctoPrint laden
+        if (IPS_GetKernelRunlevel() === KR_READY && $this->HasActiveParent()) {
+            $this->getConnectSettings();
         }
     }
+
+    public function GetCompatibleParents(): string
+    {
+        return json_encode([
+            'type'      => 'connect',
+            'moduleIDs' => ['{FDCD30E9-73C5-AC19-0470-20B71111BD91}']
+        ]);
+    }
+
+    public function RequestAction(string $Ident, mixed $Value): void
+    {
+        switch ($Ident) {
+            case 'State':
+                if ($Value) {
+                    $this->Connect();
+                } else {
+                    $this->Disconnect();
+                }
+                break;
+            case 'Ports':
+            case 'Baudrates':
+                $this->SetValue($Ident, (string) $Value);
+                break;
+            default:
+                $this->SendDebug('RequestAction :: Ident', 'Invalid Ident', 0);
+                break;
+        }
+    }
+
+    public function ReceiveData(string $JSONString): string
+    {
+        $this->SendDebug('ReceiveData :: JSON', $JSONString, 0);
+        $data = json_decode($JSONString, true);
+        $buffer = json_decode($data['Buffer'], true);
+
+        if (is_array($buffer) && array_key_exists('type', $buffer)) {
+            switch ($buffer['type']) {
+                case 'Connected':
+                    $this->SetValue('Ports', (string) ($buffer['payload']['port'] ?? ''));
+                    $this->SetValue('Baudrates', (string) ($buffer['payload']['baudrate'] ?? ''));
+                    $this->SetValue('State', true);
+                    break;
+                case 'Disconnected':
+                    $this->SetValue('State', false);
+                    break;
+            }
+        }
+        return '';
+    }
+
+    public function Connect(): void
+    {
+        // Ohne Angaben verwendet OctoPrint die gespeicherte Einstellung oder erkennt den Port automatisch
+        $params = [];
+        $port = $this->GetValue('Ports');
+        $baudrate = $this->GetValue('Baudrates');
+        if ($port !== '') {
+            $params['port'] = $port;
+        }
+        if ($baudrate !== '' && is_numeric($baudrate)) {
+            $params['baudrate'] = (int) $baudrate;
+        }
+
+        $this->sendCommand('CH.Connect', $params === [] ? '' : $params);
+    }
+
+    public function Disconnect(): void
+    {
+        $this->sendCommand('CH.Disconnect');
+    }
+
+    // Veralteter Name mit Tippfehler, bleibt für bestehende Skripte erhalten
+    public function Disonnect(): void
+    {
+        $this->Disconnect();
+    }
+
+    public function getConnectSettings(): bool
+    {
+        $JSONData = $this->sendCommand('CH.GetConnectionSettings');
+        $this->SendDebug('getConnectSettings :: Received JSON', $JSONData, 0);
+        $Data = json_decode($JSONData, true);
+
+        if (!is_array($Data) || !isset($Data['options']['ports'], $Data['options']['baudrates'])) {
+            return false;
+        }
+
+        $this->MaintainVariable('Ports', $this->Translate('Ports'), VARIABLETYPE_STRING, $this->getEnumerationPresentation($Data['options']['ports']), 0, true);
+        $this->MaintainVariable('Baudrates', $this->Translate('Baudrates'), VARIABLETYPE_STRING, $this->getEnumerationPresentation($Data['options']['baudrates']), 1, true);
+        return true;
+    }
+
+    private function getEnumerationPresentation(array $values): array
+    {
+        $options = [];
+        foreach ($values as $value) {
+            $options[] = ['Value' => (string) $value, 'Caption' => (string) $value, 'IconActive' => false, 'IconValue' => '', 'Color' => -1];
+        }
+        return [
+            'PRESENTATION' => VARIABLE_PRESENTATION_ENUMERATION,
+            'OPTIONS'      => json_encode($options)
+        ];
+    }
+}

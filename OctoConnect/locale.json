@@ -1,9 +1,27 @@
 {
     "translations": {
         "de": {
-            "User": "Benutzer",
-            "Password": "Passwort",
-            "Login": "Login"
+            "API URL": "API URL",
+            "API Key": "API Key",
+            "Update interval (multiple of 0.5 seconds)": "Aktualisierungsintervall (Vielfaches von 0,5 Sekunden)",
+            "Login": "Anmelden",
+            "Request API Key": "API Key anfordern",
+            "Please enter the API URL and apply the changes first.": "Bitte zuerst die API URL eintragen und die Änderungen übernehmen.",
+            "Application Keys are not available. Please enter an API key manually.": "Application Keys sind nicht verfügbar. Bitte einen API Key von Hand eintragen.",
+            "The request was rejected by OctoPrint.": "Die Anfrage wurde von OctoPrint abgelehnt.",
+            "Please confirm the request in the OctoPrint web interface.": "Bitte die Anfrage in der OctoPrint-Weboberfläche bestätigen.",
+            "API key received. Please apply the changes.": "API Key erhalten. Bitte die Änderungen übernehmen.",
+            "The request was denied or timed out.": "Die Anfrage wurde abgelehnt oder ist abgelaufen.",
+            "OctoPrint login failed. Please check the API key.": "OctoPrint-Anmeldung fehlgeschlagen. Bitte den API Key prüfen.",
+            "OctoPrint is not reachable. Please check the API URL.": "OctoPrint ist nicht erreichbar. Bitte die API URL prüfen.",
+            "OctoPrint rejected the API key. Please check the API key.": "OctoPrint hat den API Key abgelehnt. Bitte den API Key prüfen.",
+            "OctoPrint is connected.": "OctoPrint ist verbunden.",
+            "API URL is missing.": "Die API URL fehlt.",
+            "OctoPrint is not reachable.": "OctoPrint ist nicht erreichbar.",
+            "API key is invalid.": "Der API Key ist ungültig.",
+            "API key is missing.": "Der API Key fehlt.",
+            "Donations": "Spenden / Schenkung",
+            "This module is free for non-commercial use. Donations to support the author are accepted here:    ": "Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    "
         }
     }
 }

@@ -1,0 +1,523 @@
+<style>
+    /* Schrift, Schriftgröße, Ränder und Farben kommen von der Visualisierung, nichts davon wird hier überschrieben */
+    .oct {
+        --line: color-mix(in srgb, var(--content-color) 14%, transparent);
+        --soft: color-mix(in srgb, var(--content-color) 8%, transparent);
+        --muted: color-mix(in srgb, var(--content-color) 60%, transparent);
+        --ok: #2fb344;
+        --warn: #f59f00;
+        --err: #e03131;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8em;
+        box-sizing: border-box;
+        overflow-y: auto;
+        padding-right: 0.7em;
+        font-family: inherit;
+        font-size: inherit;
+        color: var(--content-color);
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in srgb, var(--content-color) 30%, transparent) transparent;
+    }
+
+    .oct::-webkit-scrollbar {
+        width: 0.35em;
+    }
+
+    .oct::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .oct::-webkit-scrollbar-thumb {
+        background: color-mix(in srgb, var(--content-color) 30%, transparent);
+        border-radius: 0.2em;
+    }
+
+    .oct::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-color);
+    }
+
+    .oct * {
+        box-sizing: border-box;
+    }
+
+    /* Die Blöcke behalten ihre Höhe, die Kachel scrollt statt sie zu stauchen */
+    .oct > * {
+        flex: none;
+    }
+
+    .oct-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.6em;
+    }
+
+    .oct-state {
+        font-weight: 700;
+        font-size: 1.3em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .oct-percent {
+        font-weight: 700;
+        font-size: 1.3em;
+        color: var(--accent-color);
+    }
+
+    .oct-bar {
+        height: 0.7em;
+        border-radius: 0.35em;
+        background: var(--soft);
+        overflow: hidden;
+    }
+
+    .oct-fill {
+        height: 100%;
+        width: 0;
+        border-radius: 0.35em;
+        background: var(--accent-color);
+        transition: width 0.5s ease;
+    }
+
+    .oct-fill.oct-paused {
+        background: var(--warn);
+    }
+
+    .oct-fill.oct-error {
+        background: var(--err);
+    }
+
+    .oct-file {
+        color: var(--muted);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .oct-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
+        gap: 0.6em;
+    }
+
+    .oct-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1em;
+        padding: 0.6em 0.7em;
+        border-radius: 0.8em;
+        background: var(--soft);
+        border: 1px solid var(--line);
+    }
+
+    .oct-label {
+        font-size: 0.8em;
+        color: var(--muted);
+    }
+
+    .oct-value {
+        font-weight: 700;
+    }
+
+    .oct-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5em;
+    }
+
+    .oct-button {
+        flex: 1 1 5em;
+        padding: 0.6em 0.8em;
+        font: inherit;
+        font-weight: 700;
+        color: var(--content-color);
+        background: var(--soft);
+        border: 1px solid var(--line);
+        border-radius: 0.8em;
+        cursor: pointer;
+    }
+
+    .oct-button:hover {
+        border-color: var(--accent-color);
+    }
+
+    .oct-button:disabled {
+        opacity: 0.4;
+        cursor: default;
+    }
+
+    .oct-button.oct-primary {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+        color: var(--card-color);
+    }
+
+    .oct-button.oct-danger {
+        color: var(--err);
+    }
+
+    .oct-button.oct-confirm {
+        background: var(--err);
+        border-color: var(--err);
+        color: var(--card-color);
+    }
+
+    .oct-ask {
+        flex: 1 1 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 0.6em 0.8em;
+        border-radius: 0.8em;
+        background: var(--card-color);
+        border: 1px solid var(--err);
+    }
+
+    .oct-ask span {
+        flex: 1;
+        font-weight: 700;
+    }
+
+    .oct-temps {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4em;
+    }
+
+    .oct-temp {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 0.4em 0.6em;
+        border-radius: 0.8em;
+        background: var(--soft);
+        border: 1px solid var(--line);
+    }
+
+    .oct-dot {
+        width: 0.7em;
+        height: 0.7em;
+        border-radius: 50%;
+        flex: none;
+    }
+
+    .oct-temp-name {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .oct-temp-value {
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .oct-step {
+        flex: none;
+        min-width: 2.4em;
+        padding: 0.3em 0.5em;
+        font: inherit;
+        color: var(--content-color);
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 0.6em;
+        cursor: pointer;
+    }
+
+    .oct-step:hover {
+        border-color: var(--accent-color);
+    }
+
+    .oct-chart {
+        width: 100%;
+        height: 5em;
+        border-radius: 0.8em;
+        background: var(--soft);
+        border: 1px solid var(--line);
+    }
+
+    .oct-chart polyline {
+        fill: none;
+        stroke-width: 2;
+        vector-effect: non-scaling-stroke;
+        stroke-linejoin: round;
+    }
+
+    .oct-event {
+        font-size: 0.8em;
+        color: var(--muted);
+    }
+</style>
+
+<div id="oct" class="oct">
+    <div class="oct-head">
+        <div id="oct-state" class="oct-state"></div>
+        <div id="oct-percent" class="oct-percent"></div>
+    </div>
+    <div class="oct-bar"><div id="oct-fill" class="oct-fill"></div></div>
+    <div id="oct-file" class="oct-file"></div>
+    <div id="oct-actions" class="oct-actions"></div>
+    <div id="oct-grid" class="oct-grid"></div>
+    <div id="oct-temps" class="oct-temps"></div>
+    <svg id="oct-chart" class="oct-chart" viewBox="0 0 100 40" preserveAspectRatio="none"></svg>
+    <div id="oct-event" class="oct-event"></div>
+</div>
+
+<script>
+    const root = document.getElementById('oct');
+    const numberFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 });
+    const sensors = ['tool0', 'tool1', 'bed', 'chamber'];
+    const colors = {
+        tool0: 'var(--accent-color)',
+        tool1: 'var(--ok)',
+        bed: 'var(--warn)',
+        chamber: 'var(--err)'
+    };
+    const maxPoints = 240;
+    const step = 5;
+    let history = [];
+    let current = { data: {}, labels: {} };
+    let confirming = false;
+    let confirmTimer = null;
+
+    // Die Kachel füllt die Fensterhöhe abzüglich der Ränder, die die Visualisierung am body setzt
+    function fit() {
+        const style = getComputedStyle(document.body);
+        const spacing = ['marginTop', 'marginBottom', 'paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth']
+            .reduce(function (sum, name) { return sum + (parseFloat(style[name]) || 0); }, 0);
+        root.style.height = Math.max(window.innerHeight - spacing, 0) + 'px';
+        // Scrollen soll nur die Kachel selbst, nicht die Seite darum
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+    }
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    fit();
+
+    function formatDuration(seconds) {
+        if (seconds === null || seconds === undefined) {
+            return '-';
+        }
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+        return h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+
+    function element(tag, className, text) {
+        const e = document.createElement(tag);
+        if (className) {
+            e.className = className;
+        }
+        if (text !== undefined) {
+            e.textContent = text;
+        }
+        return e;
+    }
+
+    function cell(label, value) {
+        const e = element('div', 'oct-cell');
+        e.append(element('div', 'oct-label', label), element('div', 'oct-value', value));
+        return e;
+    }
+
+    function button(label, className, onClick, disabled) {
+        const b = element('button', 'oct-button' + (className ? ' ' + className : ''), label);
+        b.type = 'button';
+        b.disabled = !!disabled;
+        b.addEventListener('click', onClick);
+        return b;
+    }
+
+    function send(ident, value) {
+        requestAction(ident, value);
+    }
+
+    function setTarget(sensor, value) {
+        send('target', JSON.stringify({ sensor: sensor, value: Math.max(0, Math.min(400, value)) }));
+    }
+
+    function askCancel() {
+        confirming = true;
+        clearTimeout(confirmTimer);
+        // Ohne Antwort verschwindet die Rückfrage nach einigen Sekunden von selbst
+        confirmTimer = setTimeout(function () {
+            confirming = false;
+            render();
+        }, 8000);
+        render();
+    }
+
+    function answerCancel(yes) {
+        confirming = false;
+        clearTimeout(confirmTimer);
+        if (yes) {
+            send('cancel', true);
+        }
+        render();
+    }
+
+    function renderActions(d, t) {
+        const actions = document.getElementById('oct-actions');
+        actions.replaceChildren();
+        const active = d.printing || d.paused;
+        if (confirming && active) {
+            const ask = element('div', 'oct-ask');
+            ask.append(
+                element('span', '', t.confirm),
+                button(t.yes, 'oct-confirm', function () { answerCancel(true); }),
+                button(t.no, '', function () { answerCancel(false); })
+            );
+            actions.append(ask);
+            return;
+        }
+        if (d.paused) {
+            actions.append(button(t.resume, 'oct-primary', function () { send('resume', true); }));
+        } else if (d.printing) {
+            actions.append(button(t.pause, '', function () { send('pause', true); }));
+        } else if (d.operational && d.file) {
+            actions.append(button(t.start, 'oct-primary', function () { send('start', true); }));
+        }
+        if (active) {
+            actions.append(button(t.cancel, 'oct-danger', askCancel));
+        }
+    }
+
+    function renderTemperatures(d, t) {
+        const container = document.getElementById('oct-temps');
+        container.replaceChildren();
+        const temps = d.temps || {};
+        sensors.filter(function (sensor) { return temps[sensor]; }).forEach(function (sensor) {
+            const value = temps[sensor];
+            const row = element('div', 'oct-temp');
+            const dot = element('span', 'oct-dot');
+            dot.style.background = colors[sensor];
+            const minus = element('button', 'oct-step', '−' + step);
+            minus.type = 'button';
+            minus.addEventListener('click', function () { setTarget(sensor, value.target - step); });
+            const plus = element('button', 'oct-step', '+' + step);
+            plus.type = 'button';
+            plus.addEventListener('click', function () { setTarget(sensor, value.target + step); });
+            const off = element('button', 'oct-step', t.off);
+            off.type = 'button';
+            off.addEventListener('click', function () { setTarget(sensor, 0); });
+            row.append(
+                dot,
+                element('span', 'oct-temp-name', t[sensor] || sensor),
+                element('span', 'oct-temp-value', numberFormat.format(value.actual) + ' / ' + numberFormat.format(value.target) + ' °C'),
+                minus, plus, off
+            );
+            container.append(row);
+        });
+    }
+
+    function renderChart() {
+        const chart = document.getElementById('oct-chart');
+        chart.replaceChildren();
+        if (history.length < 2) {
+            chart.style.display = 'none';
+            return;
+        }
+        chart.style.display = '';
+        let max = 50;
+        history.forEach(function (point) {
+            sensors.forEach(function (sensor) {
+                if (typeof point[sensor] === 'number') {
+                    max = Math.max(max, point[sensor]);
+                }
+            });
+        });
+        sensors.forEach(function (sensor) {
+            const points = [];
+            history.forEach(function (point, index) {
+                if (typeof point[sensor] === 'number') {
+                    const x = (index / (history.length - 1)) * 100;
+                    const y = 38 - (point[sensor] / max) * 36;
+                    points.push(x.toFixed(2) + ',' + y.toFixed(2));
+                }
+            });
+            if (points.length > 1) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+                line.setAttribute('points', points.join(' '));
+                line.style.stroke = colors[sensor];
+                chart.append(line);
+            }
+        });
+    }
+
+    function render() {
+        const d = current.data || {};
+        const t = current.labels || {};
+
+        document.getElementById('oct-state').textContent = d.state || t.offline || '';
+
+        const active = d.printing || d.paused;
+        const completion = typeof d.completion === 'number' ? d.completion : 0;
+        document.getElementById('oct-percent').textContent = active ? numberFormat.format(completion) + ' %' : '';
+
+        const fill = document.getElementById('oct-fill');
+        fill.style.width = (active ? Math.min(Math.max(completion, 0), 100) : 0) + '%';
+        fill.classList.toggle('oct-paused', !!d.paused);
+        fill.classList.toggle('oct-error', !!d.error);
+
+        document.getElementById('oct-file').textContent = active ? (d.file || '') : (d.file ? d.file : (t.noJob || ''));
+
+        renderActions(d, t);
+
+        const grid = document.getElementById('oct-grid');
+        grid.replaceChildren();
+        if (active) {
+            grid.append(cell(t.timeLeft, formatDuration(d.printTimeLeft)), cell(t.elapsed, formatDuration(d.printTime)));
+        }
+        if (typeof d.z === 'number') {
+            grid.append(cell(t.height, numberFormat.format(d.z) + ' mm'));
+        }
+
+        renderTemperatures(d, t);
+        renderChart();
+
+        document.getElementById('oct-event').textContent = d.event ? t.event + ': ' + d.event : '';
+    }
+
+    // Verlauf: beim Öffnen liefert das Modul die letzten Messpunkte, danach wächst er mit jedem Update
+    function collectHistory(d) {
+        const now = Date.now() / 1000;
+        const last = history[history.length - 1];
+        if (!d.temps || (last && now - last.t < 0.9)) {
+            return;
+        }
+        const point = { t: now };
+        let any = false;
+        sensors.forEach(function (sensor) {
+            if (d.temps[sensor]) {
+                point[sensor] = d.temps[sensor].actual;
+                any = true;
+            }
+        });
+        if (any) {
+            history.push(point);
+            history = history.slice(-maxPoints);
+        }
+    }
+
+    function handleMessage(message) {
+        let payload;
+        try {
+            payload = JSON.parse(message);
+        } catch (e) {
+            return;
+        }
+        current = payload;
+        if (Array.isArray(payload.history)) {
+            history = payload.history.slice(-maxPoints);
+        } else {
+            collectHistory(payload.data || {});
+        }
+        render();
+    }
+</script>

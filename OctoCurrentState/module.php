@@ -1,122 +1,154 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php';
-    class OctoCurrentState extends IPSModule
+
+require_once __DIR__ . '/../libs/OctoCommandHelper.php';
+
+class OctoCurrentState extends IPSModuleStrict
+{
+    use OctoCommandHelper;
+
+    public function Create(): void
     {
-        use VariableProfileHelper;
-        public function Create()
-        {
-            //Never delete this line!
-            parent::Create();
+        //Never delete this line!
+        parent::Create();
 
-            $this->ConnectParent('{FDCD30E9-73C5-AC19-0470-20B71111BD91}');
+        $this->RegisterPropertyString('UUID', '');
 
-            $this->RegisterPropertyString('UUID', '');
+        $this->RegisterVariableString('CurrentState', $this->Translate('Current State'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION
+        ], 0);
 
-            $this->RegisterVariableString('CurrentState', $this->Translate('Current State'), '', 0);
+        $yesNo = [
+            'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+            'OPTIONS'      => json_encode([
+                ['Value' => false, 'Caption' => $this->Translate('No'), 'IconValue' => '', 'IconActive' => false, 'ColorActive' => true, 'ColorValue' => 0xFF8000, 'ContentColorActive' => false],
+                ['Value' => true, 'Caption' => $this->Translate('Yes'), 'IconValue' => '', 'IconActive' => false, 'ColorActive' => true, 'ColorValue' => 0x00FF00, 'ContentColorActive' => false]
+            ])
+        ];
 
-            if (!IPS_VariableProfileExists('OCH.YesNo')) {
-                $this->RegisterProfileBooleanEx('OCTO.YesNo', 'Information', '', '', [
-                    [false, $this->Translate('No'),  '', 0xFF8000],
-                    [true, $this->Translate('Yes'),  '', 0x00FF00]
-                ]);
-            }
+        $this->RegisterVariableBoolean('Operational', $this->Translate('Operational'), $yesNo, 1);
+        $this->RegisterVariableBoolean('Printing', $this->Translate('Printing'), $yesNo, 2);
+        $this->RegisterVariableBoolean('Cancelling', $this->Translate('Cancelling'), $yesNo, 3);
+        $this->RegisterVariableBoolean('Pausing', $this->Translate('Pausing'), $yesNo, 4);
+        $this->RegisterVariableBoolean('Resuming', $this->Translate('Resuming'), $yesNo, 5);
+        $this->RegisterVariableBoolean('Finishing', $this->Translate('Finishing'), $yesNo, 6);
+        $this->RegisterVariableBoolean('ClosedOrError', $this->Translate('Closed or Error'), $yesNo, 7);
+        $this->RegisterVariableBoolean('Error', $this->Translate('Error'), $yesNo, 8);
+        $this->RegisterVariableBoolean('Paused', $this->Translate('Paused'), $yesNo, 9);
+        $this->RegisterVariableBoolean('Ready', $this->Translate('Ready'), $yesNo, 10);
+        $this->RegisterVariableBoolean('SDReady', $this->Translate('SD Card ready'), $yesNo, 11);
 
-            $this->RegisterVariableBoolean('Operational', $this->Translate('Operational'), 'OCTO.YesNo', 1);
-            $this->RegisterVariableBoolean('Printing', $this->Translate('Printing'), 'OCTO.YesNo', 2);
-            $this->RegisterVariableBoolean('Cancelling', $this->Translate('Cancelling'), 'OCTO.YesNo', 3);
-            $this->RegisterVariableBoolean('Pausing', $this->Translate('Pausing'), 'OCTO.YesNo', 4);
-            $this->RegisterVariableBoolean('Resuming', $this->Translate('Resuming'), 'OCTO.YesNo', 5);
-            $this->RegisterVariableBoolean('Finishing', $this->Translate('Finishing'), 'OCTO.YesNo', 6);
-            $this->RegisterVariableBoolean('ClosedOrError', $this->Translate('Closed or Error'), 'OCTO.YesNo', 7);
-            $this->RegisterVariableBoolean('Error', $this->Translate('Error'), 'OCTO.YesNo', 8);
-            $this->RegisterVariableBoolean('Paused', $this->Translate('Paused'), 'OCTO.YesNo', 9);
-            $this->RegisterVariableBoolean('Ready', $this->Translate('Ready'), 'OCTO.YesNo', 10);
-            $this->RegisterVariableBoolean('SDReady', $this->Translate('SD Card ready'), 'OCTO.YesNo', 11);
+        $this->RegisterVariableString('LastEvent', $this->Translate('Last Event'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION
+        ], 12);
+        $this->RegisterVariableInteger('LastEventTime', $this->Translate('Last Event Time'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_DATE_TIME,
+            'DATE'         => 1,
+            'TIME'         => 2
+        ], 13);
 
-            $this->RegisterProfileStringEx('OCTO.Start', 'Menu', '', '', [
-                ['start', $this->Translate('Start'), '', 0x00ff00],
-                ['restart', $this->Translate('Restart'), '', 0xff8000],
-                ['cancel', $this->Translate('Cancel'), '', 0xff0000],
-            ]);
-            $this->RegisterVariableString('ActionStart', $this->Translate('Start'), 'OCTO.Start', 13);
-            $this->EnableAction('ActionStart');
+        $this->RegisterVariableString('ActionStart', $this->Translate('Start'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_ENUMERATION,
+            'OPTIONS'      => json_encode([
+                ['Value' => 'start', 'Caption' => $this->Translate('Start'), 'IconActive' => false, 'IconValue' => '', 'Color' => 0x00FF00],
+                ['Value' => 'restart', 'Caption' => $this->Translate('Restart'), 'IconActive' => false, 'IconValue' => '', 'Color' => 0xFF8000],
+                ['Value' => 'cancel', 'Caption' => $this->Translate('Cancel'), 'IconActive' => false, 'IconValue' => '', 'Color' => 0xFF0000]
+            ])
+        ], 14);
+        $this->EnableAction('ActionStart');
 
-            $this->RegisterProfileStringEx('OCTO.Pausing', 'Menu', '', '', [
-                ['pause', $this->Translate('Pause'), '', 0xff8000],
-                ['resume', $this->Translate('Resume'), '', 0x00ff00],
-            ]);
-            $this->RegisterVariableString('ActionPausing', $this->Translate('Pausing'), 'OCTO.Pausing', 13);
-            $this->EnableAction('ActionPausing');
-        }
+        $this->RegisterVariableString('ActionPausing', $this->Translate('Pause / Resume'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_ENUMERATION,
+            'OPTIONS'      => json_encode([
+                ['Value' => 'pause', 'Caption' => $this->Translate('Pause'), 'IconActive' => false, 'IconValue' => '', 'Color' => 0xFF8000],
+                ['Value' => 'resume', 'Caption' => $this->Translate('Resume'), 'IconActive' => false, 'IconValue' => '', 'Color' => 0x00FF00]
+            ])
+        ], 15);
+        $this->EnableAction('ActionPausing');
+    }
 
-        public function RequestAction($Ident, $Value)
-        {
-            switch ($Ident) {
-                case 'ActionStart':
-                    $params = [
-                        'command' => $Value,
-                    ];
-                    $this->sendCommand('OCT.ActionStart', $params);
-                    break;
-                case 'ActionPausing':
-                    $params = [
-                        'command' => 'pause',
-                        'action'  => $Value,
-                    ];
-                    $this->sendCommand('OCT.ActionPausing', $params);
-                    break;
-                default:
+    public function Destroy(): void
+    {
+        //Never delete this line!
+        parent::Destroy();
+    }
+
+    public function ApplyChanges(): void
+    {
+        //Never delete this line!
+        parent::ApplyChanges();
+    }
+
+    public function GetCompatibleParents(): string
+    {
+        return json_encode([
+            'type'      => 'connect',
+            'moduleIDs' => ['{FDCD30E9-73C5-AC19-0470-20B71111BD91}']
+        ]);
+    }
+
+    public function RequestAction(string $Ident, mixed $Value): void
+    {
+        switch ($Ident) {
+            case 'ActionStart':
+                $params = [
+                    'command' => $Value,
+                ];
+                $this->sendCommand('OCT.ActionStart', $params);
+                break;
+            case 'ActionPausing':
+                $params = [
+                    'command' => 'pause',
+                    'action'  => $Value,
+                ];
+                $this->sendCommand('OCT.ActionPausing', $params);
+                break;
+            default:
                 $this->SendDebug('RequestAction :: Ident', 'Invalid Ident', 0);
-                }
-        }
-
-        public function Destroy()
-        {
-            //Never delete this line!
-            parent::Destroy();
-        }
-
-        public function ApplyChanges()
-        {
-            //Never delete this line!
-            parent::ApplyChanges();
-        }
-
-        public function ReceiveData($JSONString)
-        {
-            $this->SendDebug('ReceiveData :: JSON', $JSONString, 0);
-            $data = json_decode($JSONString, true);
-            $buffer = json_decode($data['Buffer'], true);
-
-            if (array_key_exists('state', $buffer)) {
-                if (array_key_exists('text', $buffer['state'])) {
-                    $this->SetValue('CurrentState', $buffer['state']['text']);
-                }
-                if (array_key_exists('flags', $buffer['state'])) {
-                    $this->SetValue('Operational', $buffer['state']['flags']['operational']);
-                    $this->SetValue('Printing', $buffer['state']['flags']['printing']);
-                    $this->SetValue('Cancelling', $buffer['state']['flags']['cancelling']);
-                    $this->SetValue('Pausing', $buffer['state']['flags']['pausing']);
-                    $this->SetValue('Resuming', $buffer['state']['flags']['resuming']);
-                    $this->SetValue('Finishing', $buffer['state']['flags']['finishing']);
-                    $this->SetValue('ClosedOrError', $buffer['state']['flags']['closedOrError']);
-                    $this->SetValue('Error', $buffer['state']['flags']['error']);
-                    $this->SetValue('Paused', $buffer['state']['flags']['paused']);
-                    $this->SetValue('Ready', $buffer['state']['flags']['ready']);
-                    $this->SetValue('SDReady', $buffer['state']['flags']['sdReady']);
-                }
-            }
-        }
-        private function sendCommand($Command, $Params)
-        {
-            $Data['DataID'] = '{B8E958B1-9C0B-8EB0-B863-7740708326EB}';
-
-            $Buffer['Command'] = $Command;
-            $Buffer['Params'] = $Params;
-            $Data['Buffer'] = $Buffer;
-            $Data = json_encode($Data);
-            $Data = json_decode($this->SendDataToParent($Data), true);
+                break;
         }
     }
+
+    public function ReceiveData(string $JSONString): string
+    {
+        $this->SendDebug('ReceiveData :: JSON', $JSONString, 0);
+        $data = json_decode($JSONString, true);
+        $buffer = json_decode($data['Buffer'], true);
+        if (!is_array($buffer)) {
+            return '';
+        }
+
+        if (isset($buffer['type']) && is_string($buffer['type'])) {
+            // Ereignis von OctoPrint, zum Beispiel PrintDone
+            $this->SetValue('LastEvent', $buffer['type']);
+            $this->SetValue('LastEventTime', time());
+            return '';
+        }
+
+        if (array_key_exists('state', $buffer)) {
+            if (array_key_exists('text', $buffer['state'])) {
+                $this->SetValue('CurrentState', (string) $buffer['state']['text']);
+            }
+            if (array_key_exists('flags', $buffer['state'])) {
+                $flags = [
+                    'Operational'   => 'operational',
+                    'Printing'      => 'printing',
+                    'Cancelling'    => 'cancelling',
+                    'Pausing'       => 'pausing',
+                    'Resuming'      => 'resuming',
+                    'Finishing'     => 'finishing',
+                    'ClosedOrError' => 'closedOrError',
+                    'Error'         => 'error',
+                    'Paused'        => 'paused',
+                    'Ready'         => 'ready',
+                    'SDReady'       => 'sdReady'
+                ];
+                foreach ($flags as $ident => $flag) {
+                    $this->SetValue($ident, (bool) ($buffer['state']['flags'][$flag] ?? false));
+                }
+            }
+        }
+        return '';
+    }
+}
