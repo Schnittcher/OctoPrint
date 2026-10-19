@@ -1,0 +1,18 @@
+{
+    "id": "{83E7FBB0-869E-457C-B034-5E15FA31652A}",
+    "name": "OctoTile",
+    "type": 3,
+    "vendor": "",
+    "aliases": [
+        "OctoPrint Tile"
+    ],
+    "parentRequirements": [
+        "{B8E958B1-9C0B-8EB0-B863-7740708326EB}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{061BF800-B5B6-5098-BD69-5D0FFD61FCED}"
+    ],
+    "prefix": "OCTO",
+    "url": "https://deinsmarthome.info"
+}

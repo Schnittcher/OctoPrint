@@ -4,10 +4,11 @@
     "type": 5,
     "vendor": "",
     "aliases": [
-        "OcotPrint Discovery"
+        "OctoPrint Discovery"
     ],
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": "OCTO"
+    "prefix": "OCTO",
+    "url": "https://deinsmarthome.info"
 }

@@ -1,107 +1,149 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php';
-    class OctoTemperatures extends IPSModule
+
+require_once __DIR__ . '/../libs/OctoCommandHelper.php';
+
+class OctoTemperatures extends IPSModuleStrict
+{
+    use OctoCommandHelper;
+
+    public function Create(): void
     {
-        use VariableProfileHelper;
-        public function Create()
-        {
-            //Never delete this line!
-            parent::Create();
+        //Never delete this line!
+        parent::Create();
 
-            $this->ConnectParent('{FDCD30E9-73C5-AC19-0470-20B71111BD91}');
+        $this->RegisterPropertyString('UUID', '');
 
-            $this->RegisterPropertyString('UUID', '');
+        $this->RegisterPropertyBoolean('Tool0Temperatures', true);
+        $this->RegisterPropertyBoolean('Tool1Temperatures', false);
+        $this->RegisterPropertyBoolean('BedTemperatures', true);
+        $this->RegisterPropertyBoolean('ChamberTemperatures', false);
+    }
 
-            $this->RegisterPropertyBoolean('Tool0Temperatures', true);
-            $this->RegisterPropertyBoolean('BedTemperatures', true);
-            $this->RegisterPropertyBoolean('ChamberTemperatures', false);
+    public function Destroy(): void
+    {
+        //Never delete this line!
+        parent::Destroy();
+    }
 
-            $this->RegisterProfileFloat('OcotoPrint.Temperatures', 'Temperature', '', ' °C', 0, 400, 1, 2);
+    public function ApplyChanges(): void
+    {
+        //Never delete this line!
+        parent::ApplyChanges();
+
+        $actual = [
+            'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+            'SUFFIX'       => ' °C',
+            'DIGITS'       => 1
+        ];
+        $target = [
+            'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
+            'MIN'          => 0,
+            'MAX'          => 400,
+            'STEP_SIZE'    => 1,
+            'SUFFIX'       => ' °C',
+            'DIGITS'       => 1
+        ];
+
+        $tool0 = $this->ReadPropertyBoolean('Tool0Temperatures');
+        $this->MaintainVariable('Tool0ActualTemperature', $this->Translate('Tool 0 actual Temperature'), VARIABLETYPE_FLOAT, $actual, 1, $tool0);
+        $this->MaintainVariable('Tool0TargetTemperature', $this->Translate('Tool 0 target Temperature'), VARIABLETYPE_FLOAT, $target, 2, $tool0);
+        if ($tool0) {
+            $this->EnableAction('Tool0TargetTemperature');
         }
 
-        public function Destroy()
-        {
-            //Never delete this line!
-            parent::Destroy();
+        $bed = $this->ReadPropertyBoolean('BedTemperatures');
+        $this->MaintainVariable('BedActualTemperature', $this->Translate('Bed actual Temperature'), VARIABLETYPE_FLOAT, $actual, 3, $bed);
+        $this->MaintainVariable('BedTargetTemperature', $this->Translate('Bed target Temperature'), VARIABLETYPE_FLOAT, $target, 4, $bed);
+        if ($bed) {
+            $this->EnableAction('BedTargetTemperature');
         }
 
-        public function ApplyChanges()
-        {
-            //Never delete this line!
-            parent::ApplyChanges();
-
-            $this->MaintainVariable('Tool0ActualTemperature', $this->Translate('Tool 0 actual Temperature'), 2, 'OcotoPrint.Temperatures', 1, $this->ReadPropertyBoolean('Tool0Temperatures') == true);
-            $this->MaintainVariable('Tool0TargetTemperature', $this->Translate('Tool 0 target Temperature'), 2, 'OcotoPrint.Temperatures', 2, $this->ReadPropertyBoolean('Tool0Temperatures') == true);
-            if ($this->ReadPropertyBoolean('Tool0Temperatures') == true) {
-                $this->EnableAction('Tool0TargetTemperature');
-            }
-
-            $this->MaintainVariable('BedActualTemperature', $this->Translate('Bed actual Temperature'), 2, 'OcotoPrint.Temperatures', 3, $this->ReadPropertyBoolean('BedTemperatures') == true);
-            $this->MaintainVariable('BedTargetTemperature', $this->Translate('Bed target Temperature'), 2, 'OcotoPrint.Temperatures', 4, $this->ReadPropertyBoolean('BedTemperatures') == true);
-            if ($this->ReadPropertyBoolean('BedTemperatures') == true) {
-                $this->EnableAction('BedTargetTemperature');
-            }
-
-            $this->MaintainVariable('ChamberActualTemperature', $this->Translate('Chamber actual Temperature'), 2, 'OcotoPrint.Temperatures', 5, $this->ReadPropertyBoolean('ChamberTemperatures') == true);
-            $this->MaintainVariable('ChamberTargetTemperature', $this->Translate('Chamber target Temperature'), 2, 'OcotoPrint.Temperatures', 6, $this->ReadPropertyBoolean('ChamberTemperatures') == true);
+        $chamber = $this->ReadPropertyBoolean('ChamberTemperatures');
+        $this->MaintainVariable('ChamberActualTemperature', $this->Translate('Chamber actual Temperature'), VARIABLETYPE_FLOAT, $actual, 5, $chamber);
+        $this->MaintainVariable('ChamberTargetTemperature', $this->Translate('Chamber target Temperature'), VARIABLETYPE_FLOAT, $target, 6, $chamber);
+        if ($chamber) {
+            $this->EnableAction('ChamberTargetTemperature');
         }
 
-        public function ReceiveData($JSONString)
-        {
-            $this->SendDebug('ReceiveData :: JSON', $JSONString, 0);
-            $data = json_decode($JSONString, true);
-            $buffer = json_decode($data['Buffer'], true);
-
-            if (array_key_exists('tool0', $buffer[0]) && ($this->ReadPropertyBoolean('Tool0Temperatures'))) {
-                $this->SetValue('Tool0ActualTemperature', $buffer[0]['tool0']['actual']);
-                $this->SetValue('Tool0TargetTemperature', $buffer[0]['tool0']['target']);
-            }
-            if (array_key_exists('bed', $buffer[0]) && ($this->ReadPropertyBoolean('BedTemperatures'))) {
-                $this->SetValue('BedActualTemperature', $buffer[0]['bed']['actual']);
-                $this->SetValue('BedTargetTemperature', $buffer[0]['bed']['target']);
-            }
-            if (array_key_exists('chamber', $buffer[0]) && ($this->ReadPropertyBoolean('ChamberTemperatures'))) {
-                $this->SetValue('ChamberActualTemperature', $buffer[0]['chamber']['actual']);
-                $this->SetValue('ChamberTargetTemperature', $buffer[0]['chamber']['target']);
-            }
-        }
-
-        public function RequestAction($Ident, $Value)
-        {
-            switch ($Ident) {
-                case 'BedTargetTemperature':
-                    $params = [
-                        'command' => 'target',
-                        'target'  => $Value
-                    ];
-                    $this->sendCommand('Temp.BedTargetTemperature', $params);
-                    break;
-                case 'Tool0TargetTemperature':
-                    $params = [
-                        'command'  => 'target',
-                        'targets'  => [
-                            'tool0' => $Value
-                        ]
-                    ];
-                    $this->sendCommand('Temp.Tool0TargetTemperature', $params);
-                    break;
-                    break;
-                default:
-                    $this->SetValue($Ident, $Value);
-                    break;
-            }
-        }
-
-        private function sendCommand($Command, $Params)
-        {
-            $Data['DataID'] = '{B8E958B1-9C0B-8EB0-B863-7740708326EB}';
-
-            $Buffer['Command'] = $Command;
-            $Buffer['Params'] = $Params;
-            $Data['Buffer'] = $Buffer;
-            $Data = json_encode($Data);
-            $Data = json_decode($this->SendDataToParent($Data), true);
+        $tool1 = $this->ReadPropertyBoolean('Tool1Temperatures');
+        $this->MaintainVariable('Tool1ActualTemperature', $this->Translate('Tool 1 actual Temperature'), VARIABLETYPE_FLOAT, $actual, 7, $tool1);
+        $this->MaintainVariable('Tool1TargetTemperature', $this->Translate('Tool 1 target Temperature'), VARIABLETYPE_FLOAT, $target, 8, $tool1);
+        if ($tool1) {
+            $this->EnableAction('Tool1TargetTemperature');
         }
     }
+
+    public function GetCompatibleParents(): string
+    {
+        return json_encode([
+            'type'      => 'connect',
+            'moduleIDs' => ['{FDCD30E9-73C5-AC19-0470-20B71111BD91}']
+        ]);
+    }
+
+    public function ReceiveData(string $JSONString): string
+    {
+        $this->SendDebug('ReceiveData :: JSON', $JSONString, 0);
+        $data = json_decode($JSONString, true);
+        $buffer = json_decode($data['Buffer'], true);
+        if (!is_array($buffer) || !isset($buffer[0]) || !is_array($buffer[0])) {
+            return '';
+        }
+
+        // Bei mehreren Messpunkten gilt der letzte
+        $temps = end($buffer);
+
+        $sensors = [
+            'tool0'   => ['Tool0Temperatures', 'Tool0'],
+            'tool1'   => ['Tool1Temperatures', 'Tool1'],
+            'bed'     => ['BedTemperatures', 'Bed'],
+            'chamber' => ['ChamberTemperatures', 'Chamber']
+        ];
+        foreach ($sensors as $key => [$property, $prefix]) {
+            if (isset($temps[$key]) && is_array($temps[$key]) && $this->ReadPropertyBoolean($property)) {
+                if (isset($temps[$key]['actual'])) {
+                    $this->SetValue($prefix . 'ActualTemperature', (float) $temps[$key]['actual']);
+                }
+                if (isset($temps[$key]['target'])) {
+                    $this->SetValue($prefix . 'TargetTemperature', (float) $temps[$key]['target']);
+                }
+            }
+        }
+        return '';
+    }
+
+    public function RequestAction(string $Ident, mixed $Value): void
+    {
+        switch ($Ident) {
+            case 'BedTargetTemperature':
+                $this->sendCommand('Temp.BedTargetTemperature', [
+                    'command' => 'target',
+                    'target'  => (float) $Value
+                ]);
+                break;
+            case 'ChamberTargetTemperature':
+                $this->sendCommand('Temp.ChamberTargetTemperature', [
+                    'command' => 'target',
+                    'target'  => (float) $Value
+                ]);
+                break;
+            case 'Tool0TargetTemperature':
+                $this->sendCommand('Temp.Tool0TargetTemperature', [
+                    'command'  => 'target',
+                    'targets'  => ['tool0' => (float) $Value]
+                ]);
+                break;
+            case 'Tool1TargetTemperature':
+                $this->sendCommand('Temp.Tool1TargetTemperature', [
+                    'command'  => 'target',
+                    'targets'  => ['tool1' => (float) $Value]
+                ]);
+                break;
+            default:
+                $this->SendDebug('RequestAction :: Ident', 'Invalid Ident', 0);
+                break;
+        }
+    }
+}

@@ -2,26 +2,24 @@
 
 declare(strict_types=1);
 
-class OctoConfigurator extends IPSModule
+class OctoConfigurator extends IPSModuleStrict
 {
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
         $this->RegisterPropertyString('UUID', '');
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
     }
 
-    public function GetConfigurationForm()
+    public function GetConfigurationForm(): string
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        $Values = [];
-
         $InstancesCount = count($Form['actions'][0]['values']);
 
         $OctoPrintInstanceNames = [];
@@ -30,6 +28,7 @@ class OctoConfigurator extends IPSModule
         $OctoPrintInstanceNames[2] = 'OctoPrint Temperatures';
         $OctoPrintInstanceNames[3] = 'OctoPrint Connection Handling';
         $OctoPrintInstanceNames[4] = 'OctoPrint System';
+        $OctoPrintInstanceNames[5] = 'OctoPrint Tile';
 
         for ($i = 0; $i <= $InstancesCount - 1; $i++) {
             $instanceID = $this->getOctoPrintInstances($Form['actions'][0]['values'][$i]['create']['moduleID'], $this->ReadPropertyString('UUID'));
@@ -41,7 +40,7 @@ class OctoConfigurator extends IPSModule
         return json_encode($Form);
     }
 
-    private function getOctoPrintInstances($moduleID, $UUID)
+    private function getOctoPrintInstances(string $moduleID, string $UUID): int
     {
         $InstanceIDs = IPS_GetInstanceListByModuleID($moduleID);
         foreach ($InstanceIDs as $id) {
