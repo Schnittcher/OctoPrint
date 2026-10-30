@@ -29,3 +29,13 @@
 - OctoDiscovery: Die Suche funktioniert auch bei anderer Reihenfolge der mDNS-Angaben.
 - OctoTemperatures: Leere Temperaturdaten führen nicht mehr zu Fehlern.
 - Alle deutschen Übersetzungen überarbeitet und vervollständigt.
+
+## 21.02.2022 - Version 1.1
+
+### Neu
+- Neue Instanz OctoSystem.
+
+## 15.10.2021 - Version 1.0 (Stable)
+
+### Neu
+- Erste stabile Version.
