@@ -4,7 +4,6 @@ libs/composer.*
 libs/phpunit.*
 .vscode/*
 docs/FORUM_POST.md
-docs/FORUM_CHANGELOG.md
 docs/adr/
 docs/IDEEN.md
 .phpunit.result.cache
