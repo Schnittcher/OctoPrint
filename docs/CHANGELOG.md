@@ -29,6 +29,7 @@
 - OctoDiscovery: Die Suche funktioniert auch bei anderer Reihenfolge der mDNS-Angaben.
 - OctoTemperatures: Leere Temperaturdaten führen nicht mehr zu Fehlern.
 - Alle deutschen Übersetzungen überarbeitet und vervollständigt.
+- Der Dokumentationslink der Instanzen führt jetzt zur Dokumentation auf deinsmarthome.info.
 
 ## 21.02.2022 - Version 1.1
 
